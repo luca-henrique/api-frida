@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 interface SocketUser {
     id: string;
+    role?: "WOMAN" | "GOV";
 }
 
 import { registerSocketHandlers } from '../services/socket.service';
@@ -26,11 +27,11 @@ export const initSocket = (httpServer: HttpServer) => {
 
         // Mock tokens for testing
         if (token === 'mock-jwt-token') {
-            socket.data.user = { id: 'user-123' };
+            socket.data.user = { id: 'user-123', role: 'WOMAN' };
             return next();
         }
         if (token === 'mock-jwt-token-gov') {
-            socket.data.user = { id: 'specialist-1' };
+            socket.data.user = { id: 'specialist-1', role: 'GOV' };
             return next();
         }
 
