@@ -6,7 +6,7 @@ import { injectable, inject } from 'tsyringe';
 
 @injectable()
 export class AuthController {
-    constructor(@inject(AuthService) private authService: AuthService) {}
+    constructor(@inject(AuthService) private authService: AuthService) { }
 
     register = async (req: Request, res: Response, next: NextFunction) => {
         try {

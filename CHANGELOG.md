@@ -8,6 +8,7 @@
 
 ### Added
 
+- Added detailed recommendations for Scalable Real-time Architecture (Redis, Kafka) in `docs/IMPROVEMENTS.md`.
 - Implemented Repository Pattern to decouple data access.
 - Refactored Services to use Repositories instead of direct Prisma calls.
 - Added ESLint and Prettier for code linting and formatting.
