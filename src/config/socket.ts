@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 interface SocketUser {
     id: string;
-    role?: "WOMAN" | "GOV";
+    role?: 'WOMAN' | 'GOV';
 }
 
 import { registerSocketHandlers } from '../services/socket.service';

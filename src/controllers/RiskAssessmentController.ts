@@ -1,61 +1,36 @@
-import { Request, Response } from 'express';
-import prisma from '../config/database';
+import { Request, Response, NextFunction } from 'express';
+import { RiskAssessmentService } from '../services/RiskAssessmentService';
 import { z } from 'zod';
 
+import { injectable, inject } from 'tsyringe';
+
+@injectable()
 export class RiskAssessmentController {
-    async create(req: Request, res: Response) {
+    constructor(@inject(RiskAssessmentService) private riskService: RiskAssessmentService) {}
+
+    create = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const schema = z.object({
                 answers: z.array(z.number()),
             });
 
             const { answers } = schema.parse(req.body);
-            const userId = req.userId;
+            const userId = req.userId!;
 
-            if (!userId) {
-                return res.status(401).json({ error: 'User not authenticated' });
-            }
-
-            // Calculate risk logic (same as frontend)
-            const totalScore = answers.reduce((a, b) => a + b, 0);
-            let riskLevel = 'LOW';
-
-            if (totalScore >= 3) {
-                riskLevel = 'HIGH';
-            } else if (totalScore >= 1) {
-                riskLevel = 'MEDIUM';
-            }
-
-            const assessment = await prisma.riskAssessment.create({
-                data: {
-                    userId,
-                    score: totalScore,
-                    riskLevel,
-                    answers: JSON.stringify(answers),
-                },
-            });
-
-            return res.status(201).json(assessment);
+            const assessment = await this.riskService.create(userId, answers);
+            res.status(201).json(assessment);
         } catch (error) {
-            if (error instanceof z.ZodError) {
-                return res.status(400).json({ errors: error.issues });
-            }
-            return res.status(500).json({ error: 'Internal server error' });
+            next(error);
         }
-    }
+    };
 
-    async list(req: Request, res: Response) {
+    list = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userId = req.userId;
-
-            const assessments = await prisma.riskAssessment.findMany({
-                where: { userId },
-                orderBy: { createdAt: 'desc' },
-            });
-
-            return res.json(assessments);
+            const userId = req.userId!;
+            const assessments = await this.riskService.list(userId);
+            res.json(assessments);
         } catch (error) {
-            return res.status(500).json({ error: 'Internal server error' });
+            next(error);
         }
-    }
+    };
 }

@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/frida
+      - JWT_SECRET=dev_secret
+    depends_on:
+      - db
+    networks:
+      - frida-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=frida
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - frida-network
+
+networks:
+  frida-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

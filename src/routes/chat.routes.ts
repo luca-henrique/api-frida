@@ -1,9 +1,10 @@
 import { Router } from 'express';
+import { container } from 'tsyringe';
 import { ChatController } from '../controllers/ChatController';
 import { authMiddleware } from '../middlewares/auth';
 
 const router = Router();
-const controller = new ChatController();
+const controller = container.resolve(ChatController);
 
 router.use(authMiddleware);
 

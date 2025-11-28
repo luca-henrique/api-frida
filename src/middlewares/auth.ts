@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import prisma from '../config/database';
 
 interface TokenPayload {
     id: string;
@@ -9,6 +8,7 @@ interface TokenPayload {
 }
 
 declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Express {
         interface Request {
             userId?: string;
@@ -16,11 +16,7 @@ declare global {
     }
 }
 
-export async function authMiddleware(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
 
     if (!authorization) {
@@ -36,7 +32,7 @@ export async function authMiddleware(
         req.userId = id;
 
         return next();
-    } catch (error) {
+    } catch (_error) {
         return res.status(401).json({ error: 'Token invalid' });
     }
 }
