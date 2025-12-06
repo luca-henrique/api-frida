@@ -6,7 +6,7 @@ import { injectable, inject } from 'tsyringe';
 
 @injectable()
 export class AuthController {
-    constructor(@inject(AuthService) private authService: AuthService) { }
+    constructor(@inject(AuthService) private authService: AuthService) {}
 
     register = async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -22,6 +22,16 @@ export class AuthController {
         try {
             const data = loginSchema.parse(req.body);
             const result = await this.authService.login(data);
+            res.json(result);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    refresh = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { refreshToken } = req.body;
+            const result = await this.authService.refreshToken(refreshToken);
             res.json(result);
         } catch (error) {
             next(error);

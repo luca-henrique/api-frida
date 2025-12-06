@@ -1,0 +1,184 @@
+@baseUrl = http://localhost:3000/api
+
+### Criar Conta
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Maria Silva",
+  "cpf": "123.456.789-00",
+  "birthDate": "15/05/1990",
+  "phone": "(11) 98765-4321",
+  "cep": "01001-000",
+  "street": "Praça da Sé",
+  "number": "100",
+  "neighborhood": "Sé",
+  "city": "São Paulo",
+  "state": "SP",
+  "email": "maria.silva@example.com",
+  "password": "password123",
+  "confirmPassword": "password123"
+}
+
+### Login (Usuário Comum)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "maria.silva@example.com",
+  "password": "password123"
+}
+
+### Login (Suporte)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "suporte@frida.com",
+  "password": "password123"
+}
+
+### Login (Polícia)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "policia@frida.com",
+  "password": "password123"
+}
+
+### Login (Bombeiros)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "bombeiros@frida.com",
+  "password": "password123"
+}
+
+### Login (Delegada)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "delegada@frida.com",
+  "password": "password123"
+}
+
+### Refresh Token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "token": "{{login.response.body.refreshToken}}"
+}
+
+### Listar Usuários (Admin)
+GET {{baseUrl}}/users?page=1&limit=10
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### Listar Usuários por Role (GOV)
+GET {{baseUrl}}/users?page=1&limit=10&role=GOV
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### Listar Usuários por Role (USER)
+GET {{baseUrl}}/users?page=1&limit=10&role=USER
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### Listar Usuários Comuns (Vítimas)
+GET {{baseUrl}}/users?page=1&limit=10&type=COMMON
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### Listar Usuários do Sistema (Agentes)
+GET {{baseUrl}}/users?page=1&limit=10&type=SYSTEM
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### Criar Usuário (Admin)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Novo Usuário",
+  "email": "novo.usuario@example.com",
+  "password": "password123",
+  "cpf": "123.123.123-12",
+  "role": "USER"
+}
+
+### Criar Usuário (Suporte)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Novo Suporte",
+  "email": "novo.suporte@frida.com",
+  "password": "password123",
+  "cpf": "123.123.123-13",
+  "role": "SUPPORT"
+}
+
+### Criar Usuário (Polícia)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Nova Polícia",
+  "email": "nova.policia@frida.com",
+  "password": "password123",
+  "cpf": "123.123.123-14",
+  "role": "POLICE"
+}
+
+### Criar Usuário (Bombeiros)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Novo Bombeiro",
+  "email": "novo.bombeiro@frida.com",
+  "password": "password123",
+  "cpf": "123.123.123-15",
+  "role": "FIREFIGHTER"
+}
+
+### Criar Usuário (Delegada)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Nova Delegada",
+  "email": "nova.delegada@frida.com",
+  "password": "password123",
+  "cpf": "123.123.123-16",
+  "role": "DELEGATE"
+}
+
+### Detalhar Usuário (Admin)
+GET {{baseUrl}}/users/{{login.response.body.user.id}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+### Atualizar Usuário (Admin)
+PUT {{baseUrl}}/users/{{login.response.body.user.id}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Nome Atualizado"
+}
+
+### Excluir Usuário (Admin)
+DELETE {{baseUrl}}/users/{{login.response.body.user.id}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}

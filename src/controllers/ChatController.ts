@@ -6,7 +6,7 @@ import { injectable, inject } from 'tsyringe';
 
 @injectable()
 export class ChatController {
-    constructor(@inject(ChatService) private chatService: ChatService) { }
+    constructor(@inject(ChatService) private chatService: ChatService) {}
 
     listChats = async (req: Request, res: Response, next: NextFunction) => {
         try {

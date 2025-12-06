@@ -10,6 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  SUPPORT
+  POLICE
+  FIREFIGHTER
+  DELEGATE
+  GOV
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
@@ -18,6 +27,7 @@ model User {
   cpf       String   @unique
   phone     String?
   birthDate String?
+  role      Role     @default(USER)
   
   // Address fields
   cep          String?
@@ -40,6 +50,16 @@ model User {
   sentMessages     Message[] @relation("SentMessages")
   chats            Chat[]    @relation("UserChats")
   location         Location?
+  refreshToken     RefreshToken?
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  expiresIn Int
+  createdAt DateTime @default(now())
 }
 
 model Chat {
@@ -110,4 +130,16 @@ model Notification {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  date      DateTime
+  category  String   // "Legislação" | "Segurança" | "Comunidade" | "Todos"
+  content   String
+  imageUrl  String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

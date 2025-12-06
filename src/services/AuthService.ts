@@ -9,9 +9,16 @@ import { UserRepository } from '../repositories/UserRepository';
 type RegisterData = z.infer<typeof registerSchema>;
 type LoginData = z.infer<typeof loginSchema>;
 
+import { v4 as uuidv4 } from 'uuid';
+import { RefreshTokenRepository } from '../repositories/RefreshTokenRepository';
+import dayjs from 'dayjs';
+
 @injectable()
 export class AuthService {
-    constructor(@inject(UserRepository) private userRepository: UserRepository) {}
+    constructor(
+        @inject(UserRepository) private userRepository: UserRepository,
+        @inject(RefreshTokenRepository) private refreshTokenRepository: RefreshTokenRepository,
+    ) { }
 
     async register(data: RegisterData) {
         const existingUser = await this.userRepository.findByEmailOrCpf(data.email, data.cpf);
@@ -22,8 +29,10 @@ export class AuthService {
 
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
+        const { confirmPassword: _, ...userData } = data;
+
         const user = await this.userRepository.create({
-            ...data,
+            ...userData,
             password: hashedPassword,
         });
 
@@ -46,11 +55,41 @@ export class AuthService {
         }
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || 'secret', {
-            expiresIn: '1d',
+            expiresIn: '15m', // Short-lived access token
         });
+
+        await this.refreshTokenRepository.deleteByUserId(user.id);
+
+        const refreshTokenExpiresIn = dayjs().add(1, 'day').unix();
+        const refreshToken = await this.refreshTokenRepository.create(
+            user.id,
+            uuidv4(),
+            refreshTokenExpiresIn,
+        );
 
         const { password: _, ...userWithoutPassword } = user;
 
-        return { user: userWithoutPassword, token };
+        return { user: userWithoutPassword, token, refreshToken: refreshToken.token };
+    }
+
+    async refreshToken(token: string) {
+        const refreshToken = await this.refreshTokenRepository.findByToken(token);
+
+        if (!refreshToken) {
+            throw new AppError('Refresh token invalid', 401);
+        }
+
+        const refreshTokenExpired = dayjs().isAfter(dayjs.unix(refreshToken.expiresIn));
+
+        if (refreshTokenExpired) {
+            await this.refreshTokenRepository.deleteByUserId(refreshToken.userId);
+            throw new AppError('Refresh token expired', 401);
+        }
+
+        const tokenNew = jwt.sign({ id: refreshToken.userId }, process.env.JWT_SECRET || 'secret', {
+            expiresIn: '15m',
+        });
+
+        return { token: tokenNew };
     }
 }

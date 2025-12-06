@@ -11,7 +11,7 @@ import yaml from 'js-yaml';
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ strict: false }));
 app.use(cors());
 app.use(
     helmet({
