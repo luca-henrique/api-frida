@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI4MTc4NWZlLTcyZDEtNGEwYy04NDg2LTQ1OTZjMWNhNTNiYiIsImlhdCI6MTc2NDUzMDUzOSwiZXhwIjoxNzY0NTMxNDM5fQ.0ri66l9kgFSuZ7R5VUQL-kujIh3j8aU9mXRMrYl2PsY
+
+### Listar Usuários
+GET {{baseUrl}}/users?page=1&limit=10
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Listar por Role (Ex: GOV)
+GET {{baseUrl}}/users?page=1&limit=10&role=GOV
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Detalhar Usuário
+GET {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Criar Usuário Admin (Requer Token com permissão adequada)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Admin User",
+  "email": "admin@frida.com",
+  "password": "password123",
+  "role": "GOV",
+  "cpf": "000.000.000-00"
+}
+
+### Atualizar Usuário
+PUT {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Nome Atualizado"
+}
+
+### Deletar Usuário
+DELETE {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}

@@ -105,6 +105,31 @@ paths:
                                         $ref: '#/components/schemas/User'
                                     token:
                                         type: string
+                                    refreshToken:
+                                        type: string
+    /auth/refresh:
+        post:
+            summary: Refresh Token
+            tags: [Auth]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                token:
+                                    type: string
+            responses:
+                200:
+                    description: Token refreshed
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
     /risk:
         post:
             summary: Create Risk Assessment
@@ -121,7 +146,12 @@ paths:
                                 answers:
                                     type: array
                                     items:
-                                        type: number
+                                        type: object
+                                        properties:
+                                            questionId:
+                                                type: string
+                                            value:
+                                                type: number
             responses:
                 201:
                     description: Assessment created
@@ -421,7 +451,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UserInput'
+                            $ref: '#/components/schemas/User'
             responses:
                 201:
                     description: User created
@@ -456,7 +486,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UserInput'
+                            $ref: '#/components/schemas/User'
             responses:
                 200:
                     description: User updated

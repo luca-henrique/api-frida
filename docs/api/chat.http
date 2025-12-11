@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI4MTc4NWZlLTcyZDEtNGEwYy04NDg2LTQ1OTZjMWNhNTNiYiIsImlhdCI6MTc2NDUzMDUzOSwiZXhwIjoxNzY0NTMxNDM5fQ.0ri66l9kgFSuZ7R5VUQL-kujIh3j8aU9mXRMrYl2PsY
+
+### Listar Meus Chats
+GET {{baseUrl}}/chat
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Iniciar Novo Chat
+POST {{baseUrl}}/chat
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "participantId": "id-do-participante"
+}
+
+### Obter Mensagens do Chat
+GET {{baseUrl}}/chat/{{chatId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
