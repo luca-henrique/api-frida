@@ -1,0 +1,61 @@
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI4MTc4NWZlLTcyZDEtNGEwYy04NDg2LTQ1OTZjMWNhNTNiYiIsImlhdCI6MTc2NTMyMjE1OCwiZXhwIjoxNzY1MzIzMDU4fQ.vaaMh9ccPVUx3TXdkrWB9_3Bttqw6goi7bUigE5wS9Y
+
+### Listar Perguntas Ativas (APP) - Com Paginação
+GET {{baseUrl}}/risk/questions?page=1&limit=10
+Content-Type: application/json
+
+### Listar Perguntas Ativas (APP) - Com Paginação
+GET {{baseUrl}}/risk/questions/all
+Content-Type: application/json
+
+### Listar Todas as Perguntas (Dashboard) - Com Paginação
+GET {{baseUrl}}/risk/questions/all?page=1&limit=10
+Content-Type: application/json
+
+### Listar Todas as Perguntas (Dashboard) - Sem Paginação (Flat)
+GET {{baseUrl}}/risk/questions/all
+Content-Type: application/json
+
+### Criar Pergunta (Dashboard)
+POST {{baseUrl}}/risk/questions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Você se sente segura em casa?",
+  "order": 1
+}
+
+### Atualizar Pergunta (Dashboard)
+# Substitua :id pelo ID real da pergunta
+PUT {{baseUrl}}/risk/questions/:id
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Você se sente segura em sua residência?",
+  "order": 1,
+  "active": true
+}
+
+### Deletar Pergunta (Dashboard)
+# Substitua :id pelo ID real da pergunta
+DELETE {{baseUrl}}/risk/questions/891bdc5f-aeec-4c92-a16b-816358a1389c
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obter Última Avaliação (App)
+GET {{baseUrl}}/risk/latest
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Listar Histórico (Autenticado)
+GET {{baseUrl}}/risk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Listar Histórico (Público - com userId)
+# Substitua :userId pelo ID real da usuária
+GET {{baseUrl}}/risk?userId=33fb2177-24de-4910-bccc-0442292a5d27
+Content-Type: application/json

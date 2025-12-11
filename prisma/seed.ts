@@ -3,8 +3,46 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+const fridaQuestions = [
+    { order: 1, text: "A violência vem aumentando de gravidade e/ou de frequência no último mês?" },
+    { order: 2, text: "A senhora/você está grávida ou teve bebê nos últimos 18 meses?" },
+    { order: 3, text: "A senhora/você tem filhos(as) com o(a) agressor(a)?" },
+    { order: 4, text: "Em caso afirmativo, estão vivendo algum conflito com relação à guarda dos filhos, visitas ou pagamento de pensão pelo agressor?" },
+    { order: 5, text: "O(A) agressor(a) persegue a senhora/você, demonstra ciúme excessivo, tenta controlar sua vida e as coisas que você faz?" },
+    { order: 6, text: "A senhora/você se separou recentemente do(a) agressor(a), tentou ou tem intenção de se separar?" },
+    { order: 7, text: "O(A) agressor(a) também é violento com outras pessoas (familiares, amigos, colegas etc.)?" },
+    { order: 8, text: "O(A) agressor(a) maltrata ou agride animais domésticos?" },
+    { order: 9, text: "O(A) agressor(a) já a agrediu fisicamente outras vezes?" },
+    { order: 10, text: "Alguma vez o(a) agressor(a) tentou estrangular, sufocar ou afogar a senhora/você?" },
+    { order: 11, text: "O(A) agressor(a) já fez ameaças de morte ou tentou matar a senhora/você?" },
+    { order: 12, text: "O(A) agressor(a) já usou, ameaçou usar arma de fogo contra a senhora/você ou tem fácil acesso a uma arma?" },
+    { order: 13, text: "O(A) agressor(a) já a ameaçou ou feriu com outro tipo de arma ou instrumento?" },
+    { order: 14, text: "A senhora/você necessitou de atendimento médico e/ou internação após algumas dessas agressões?" },
+    { order: 15, text: "O(A) agressor(a) é usuário de drogas e/ou bebidas alcoólicas?" },
+    { order: 16, text: "O(A) agressor(a) faz uso de medicação controlada para alguma doença mental/psiquiátrica?" },
+    { order: 17, text: "A senhora/você já teve ou tem medida protetiva de urgência?" },
+    { order: 18, text: "O(A) agressor(a) já descumpriu medida protetiva de afastamento ou proibição de contato?" },
+    { order: 19, text: "O(A) agressor(a) já ameaçou ou tentou se matar alguma vez?" },
+    // Nota: O PDF menciona 19 perguntas na tabela de pontuação [cite: 501], mas lista algumas extras como violência sexual ou financeira na página 32[cite: 505]. 
+    // Adicionei as listadas na estrutura principal.
+];
+
+
 async function main() {
     const hashedPassword = await bcrypt.hash('password123', 10);
+
+    for (const q of fridaQuestions) {
+        await prisma.riskQuestion.upsert({
+            where: { id: `frida-q-${q.order}` }, // Usando ID determinístico para evitar duplicatas no seed
+            update: { text: q.text, order: q.order },
+            create: {
+                id: `frida-q-${q.order}`,
+                text: q.text,
+                order: q.order,
+                active: true
+            },
+        });
+    }
 
     // Create Mock Users
     const user = await prisma.user.upsert({

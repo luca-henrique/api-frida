@@ -28,6 +28,7 @@ model User {
   phone     String?
   birthDate String?
   role      Role     @default(USER)
+  riskLevel String?  // LOW, MEDIUM, HIGH
   
   // Address fields
   cep          String?
@@ -96,7 +97,7 @@ model RiskAssessment {
   user      User     @relation(fields: [userId], references: [id])
   score     Int
   riskLevel String   // LOW, MEDIUM, HIGH
-  answers   Json     // Stores the detailed answers
+  answers   RiskAssessmentAnswer[]
   createdAt DateTime @default(now())
 }
 
@@ -142,4 +143,31 @@ model News {
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model RiskQuestion {
+  id          String   @id @default(uuid())
+  text        String
+  description String?  // Para orientações extras (ex: "Caso não tenham filhos...")
+  order       Int      // Para manter a ordem das 19 perguntas
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  answers     RiskAssessmentAnswer[]
+}
+
+model RiskAssessmentAnswer {
+  id            String         @id @default(uuid())
+  
+  assessmentId  String
+  assessment    RiskAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  
+  questionId    String
+  question      RiskQuestion   @relation(fields: [questionId], references: [id])
+  
+  value         Int            // 0=Não, 1=Sim, 2=Não Sabe, 3=Não se Aplica
+  
+  createdAt     DateTime       @default(now())
+
+  @@unique([assessmentId, questionId]) // Garante apenas 1 resposta por pergunta neste formulário
 }
