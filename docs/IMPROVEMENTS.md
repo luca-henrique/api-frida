@@ -15,8 +15,8 @@ The current socket implementation uses in-memory storage and basic Socket.io eve
 **Solution:** Implement Socket.io acknowledgements.
 
 ```typescript
-socket.emit("location_update", data, (response) => {
-  if (response.status !== "ok") {
+socket.emit('location_update', data, (response) => {
+  if (response.status !== 'ok') {
     // Retry logic or log error
   }
 });

@@ -14,37 +14,37 @@ const app = express();
 app.use(express.json({ strict: false }));
 app.use(cors());
 app.use(
-    helmet({
-        contentSecurityPolicy: {
-            directives: {
-                ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-                'script-src': ["'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net'],
-                'img-src': ["'self'", 'data:', 'https://cdn.jsdelivr.net'],
-            },
-        },
-    }),
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net'],
+        'img-src': ["'self'", 'data:', 'https://cdn.jsdelivr.net'],
+      },
+    },
+  }),
 );
 app.use(morgan('dev'));
 
 app.use('/api', routes);
 
 const openApiSpec = yaml.load(
-    fs.readFileSync(path.join(__dirname, '../docs/openapi.yaml'), 'utf8'),
+  fs.readFileSync(path.join(__dirname, '../docs/api/openapi.yaml'), 'utf8'),
 );
 
 app.use(
-    '/docs',
-    apiReference({
-        spec: {
-            content: openApiSpec,
-        },
-    }),
+  '/docs',
+  apiReference({
+    spec: {
+      content: openApiSpec,
+    },
+  }),
 );
 
 app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Frida API is running' });
+  res.json({ message: 'Frida API is running' });
 });
 
 export default app;

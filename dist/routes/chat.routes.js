@@ -1,9 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const tsyringe_1 = require("tsyringe");
-const ChatController_1 = require("../controllers/ChatController");
-const auth_1 = require("../middlewares/auth");
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
+const express_1 = require('express');
+const tsyringe_1 = require('tsyringe');
+const ChatController_1 = require('../controllers/ChatController');
+const auth_1 = require('../middlewares/auth');
 const router = (0, express_1.Router)();
 const controller = tsyringe_1.container.resolve(ChatController_1.ChatController);
 router.use(auth_1.authMiddleware);

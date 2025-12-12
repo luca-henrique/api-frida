@@ -3,8 +3,8 @@ import { Server as HttpServer } from 'http';
 import jwt from 'jsonwebtoken';
 
 interface SocketUser {
-    id: string;
-    role?: 'WOMAN' | 'GOV';
+  id: string;
+  role?: 'WOMAN' | 'GOV';
 }
 
 import { registerSocketHandlers } from '../services/socket.service';
@@ -12,39 +12,39 @@ import { registerSocketHandlers } from '../services/socket.service';
 export let io: SocketIOServer;
 
 export const initSocket = (httpServer: HttpServer) => {
-    io = new SocketIOServer(httpServer, {
-        cors: {
-            origin: '*', // Allow all origins for mobile app
-            methods: ['GET', 'POST'],
-        },
-    });
+  io = new SocketIOServer(httpServer, {
+    cors: {
+      origin: '*', // Allow all origins for mobile app
+      methods: ['GET', 'POST'],
+    },
+  });
 
-    io.use((socket, next) => {
-        const token = socket.handshake.auth.token;
-        if (!token) {
-            return next(new Error('Authentication error'));
-        }
+  io.use((socket, next) => {
+    const token = socket.handshake.auth.token;
+    if (!token) {
+      return next(new Error('Authentication error'));
+    }
 
-        // Mock tokens for testing
-        if (token === 'mock-jwt-token') {
-            socket.data.user = { id: 'user-123', role: 'WOMAN' };
-            return next();
-        }
-        if (token === 'mock-jwt-token-gov') {
-            socket.data.user = { id: 'specialist-1', role: 'GOV' };
-            return next();
-        }
+    // Mock tokens for testing
+    if (token === 'mock-jwt-token') {
+      socket.data.user = { id: 'user-123', role: 'WOMAN' };
+      return next();
+    }
+    if (token === 'mock-jwt-token-gov') {
+      socket.data.user = { id: 'specialist-1', role: 'GOV' };
+      return next();
+    }
 
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
-            socket.data.user = decoded as SocketUser;
-            next();
-        } catch (err) {
-            next(new Error('Authentication error'));
-        }
-    });
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+      socket.data.user = decoded as SocketUser;
+      next();
+    } catch (err) {
+      next(new Error('Authentication error'));
+    }
+  });
 
-    registerSocketHandlers(io);
+  registerSocketHandlers(io);
 
-    return io;
+  return io;
 };

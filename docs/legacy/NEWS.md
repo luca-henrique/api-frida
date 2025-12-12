@@ -26,9 +26,9 @@ Retorna uma lista paginada de notícias ativas.
 - **Método:** `GET`
 - **Autenticação:** Não necessária (Público)
 - **Parâmetros de Query:**
-    - `page` (opcional): Número da página (padrão: 1).
-    - `limit` (opcional): Itens por página (padrão: 10).
-    - `category` (opcional): Filtrar por categoria.
+  - `page` (opcional): Número da página (padrão: 1).
+  - `limit` (opcional): Itens por página (padrão: 10).
+  - `category` (opcional): Filtrar por categoria.
 
 **Exemplo de Resposta:**
 
@@ -80,11 +80,11 @@ Cria uma nova notícia.
 
 ```json
 {
-    "title": "Título da Notícia",
-    "date": "2023-12-01T00:00:00.000Z",
-    "category": "Comunidade",
-    "content": "Conteúdo da notícia...",
-    "imageUrl": "http://..."
+  "title": "Título da Notícia",
+  "date": "2023-12-01T00:00:00.000Z",
+  "category": "Comunidade",
+  "content": "Conteúdo da notícia...",
+  "imageUrl": "http://..."
 }
 ```
 
@@ -99,7 +99,7 @@ Atualiza os dados de uma notícia existente.
 
 ```json
 {
-    "title": "Título Atualizado"
+  "title": "Título Atualizado"
 }
 ```
 

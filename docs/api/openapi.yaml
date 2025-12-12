@@ -1,506 +1,506 @@
 openapi: 3.0.0
 info:
-    title: Frida API
-    version: 1.0.0
-    description: Backend API for the Frida application.
+  title: Frida API
+  version: 1.0.0
+  description: Backend API for the Frida application.
 servers:
-    - url: http://localhost:3000/api
-      description: Local Development Server
+  - url: http://localhost:3000/api
+    description: Local Development Server
 components:
-    securitySchemes:
-        bearerAuth:
-            type: http
-            scheme: bearer
-            bearerFormat: JWT
-    schemas:
-        User:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                email:
-                    type: string
-                cpf:
-                    type: string
-                role:
-                    type: string
-                    enum: [USER, SUPPORT, POLICE, FIREFIGHTER, DELEGATE, GOV]
-        Error:
-            type: object
-            properties:
-                status:
-                    type: string
-                message:
-                    type: string
-        NewsInput:
-            type: object
-            properties:
-                title:
-                    type: string
-                date:
-                    type: string
-                    format: date-time
-                category:
-                    type: string
-                    enum: [Legislação, Segurança, Comunidade, Todos]
-                content:
-                    type: string
-                imageUrl:
-                    type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+        role:
+          type: string
+          enum: [USER, SUPPORT, POLICE, FIREFIGHTER, DELEGATE, GOV]
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    NewsInput:
+      type: object
+      properties:
+        title:
+          type: string
+        date:
+          type: string
+          format: date-time
+        category:
+          type: string
+          enum: [Legislação, Segurança, Comunidade, Todos]
+        content:
+          type: string
+        imageUrl:
+          type: string
 paths:
-    /auth/register:
-        post:
-            summary: Register a new user
-            tags: [Auth]
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                name:
-                                    type: string
-                                email:
-                                    type: string
-                                password:
-                                    type: string
-                                cpf:
-                                    type: string
-                                phone:
-                                    type: string
-            responses:
-                201:
-                    description: User created
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-    /auth/login:
-        post:
-            summary: Login
-            tags: [Auth]
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                email:
-                                    type: string
-                                password:
-                                    type: string
-            responses:
-                200:
-                    description: Login successful
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    user:
-                                        $ref: '#/components/schemas/User'
-                                    token:
-                                        type: string
-                                    refreshToken:
-                                        type: string
-    /auth/refresh:
-        post:
-            summary: Refresh Token
-            tags: [Auth]
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                token:
-                                    type: string
-            responses:
-                200:
-                    description: Token refreshed
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    token:
-                                        type: string
-    /risk:
-        post:
-            summary: Create Risk Assessment
-            tags: [Risk]
-            security:
-                - bearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                answers:
-                                    type: array
-                                    items:
-                                        type: object
-                                        properties:
-                                            questionId:
-                                                type: string
-                                            value:
-                                                type: number
-            responses:
-                201:
-                    description: Assessment created
-        get:
-            summary: List Risk Assessments
-            tags: [Risk]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: query
-                  name: userId
-                  schema:
-                      type: string
-                  description: Optional User ID for public access
-            responses:
-                200:
-                    description: List of assessments
-    /risk/latest:
-        get:
-            summary: Get Latest Risk Assessment
-            tags: [Risk]
-            security:
-                - bearerAuth: []
-            responses:
-                200:
-                    description: Latest assessment details
-    /risk/questions:
-        get:
-            summary: List Active Risk Questions (App)
-            tags: [Risk Questions]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: query
-                  name: page
-                  schema:
-                      type: integer
-                - in: query
-                  name: limit
-                  schema:
-                      type: integer
-            responses:
-                200:
-                    description: List of active questions
-        post:
-            summary: Create Risk Question (Dashboard)
-            tags: [Risk Questions]
-            security:
-                - bearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                text:
-                                    type: string
-                                order:
-                                    type: number
-            responses:
-                201:
-                    description: Question created
-    /risk/questions/all:
-        get:
-            summary: List All Risk Questions (Dashboard)
-            description: Returns all questions. If page/limit are omitted, returns a flat array.
-            tags: [Risk Questions]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: query
-                  name: page
-                  schema:
-                      type: integer
-                - in: query
-                  name: limit
-                  schema:
-                      type: integer
-            responses:
-                200:
-                    description: List of all questions
-    /risk/questions/{id}:
-        put:
-            summary: Update Risk Question (Dashboard)
-            tags: [Risk Questions]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                text:
-                                    type: string
-                                order:
-                                    type: number
-                                active:
-                                    type: boolean
-            responses:
-                200:
-                    description: Question updated
-        delete:
-            summary: Delete Risk Question (Dashboard)
-            tags: [Risk Questions]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                204:
-                    description: Question deleted
-    /chat:
-        get:
-            summary: List Chats
-            tags: [Chat]
-            security:
-                - bearerAuth: []
-            responses:
-                200:
-                    description: List of chats
-        post:
-            summary: Create Chat
-            tags: [Chat]
-            security:
-                - bearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                participantId:
-                                    type: string
-            responses:
-                201:
-                    description: Chat created
-    /chat/{id}:
-        get:
-            summary: Get Chat Details
-            tags: [Chat]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                200:
-                    description: Chat details
-    /news:
-        get:
-            summary: List News
-            tags: [News]
-            parameters:
-                - in: query
-                  name: page
-                  schema:
-                      type: integer
-                - in: query
-                  name: limit
-                  schema:
-                      type: integer
-                - in: query
-                  name: category
-                  schema:
-                      type: string
-            responses:
-                200:
-                    description: List of news
-        post:
-            summary: Create News
-            tags: [News]
-            security:
-                - bearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/NewsInput'
-            responses:
-                201:
-                    description: News created
-    /news/{id}:
-        get:
-            summary: Get News Details
-            tags: [News]
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                200:
-                    description: News details
-        put:
-            summary: Update News
-            tags: [News]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/NewsInput'
-            responses:
-                200:
-                    description: News updated
-        delete:
-            summary: Delete News
-            tags: [News]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                204:
-                    description: News deleted
-    /news/{id}/disable:
-        patch:
-            summary: Disable News
-            tags: [News]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                204:
-                    description: News disabled
-    /users:
-        get:
-            summary: List Users
-            tags: [Users]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: query
-                  name: page
-                  schema:
-                      type: integer
-                - in: query
-                  name: limit
-                  schema:
-                      type: integer
-                - in: query
-                  name: role
-                  schema:
-                      type: string
-                      enum: [USER, SUPPORT, POLICE, FIREFIGHTER, DELEGATE, GOV]
-                - in: query
-                  name: type
-                  schema:
-                      type: string
-                      enum: [COMMON, SYSTEM]
-            responses:
-                200:
-                    description: List of users
-        post:
-            summary: Create User
-            tags: [Users]
-            security:
-                - bearerAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-            responses:
-                201:
-                    description: User created
-    /users/{id}:
-        get:
-            summary: Get User Details
-            tags: [Users]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                200:
-                    description: User details
-        put:
-            summary: Update User
-            tags: [Users]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-            responses:
-                200:
-                    description: User updated
-        delete:
-            summary: Delete User
-            tags: [Users]
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                204:
-                    description: User deleted
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                cpf:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        201:
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /auth/login:
+    post:
+      summary: Login
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  token:
+                    type: string
+                  refreshToken:
+                    type: string
+  /auth/refresh:
+    post:
+      summary: Refresh Token
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        200:
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /risk:
+    post:
+      summary: Create Risk Assessment
+      tags: [Risk]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      questionId:
+                        type: string
+                      value:
+                        type: number
+      responses:
+        201:
+          description: Assessment created
+    get:
+      summary: List Risk Assessments
+      tags: [Risk]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: string
+          description: Optional User ID for public access
+      responses:
+        200:
+          description: List of assessments
+  /risk/latest:
+    get:
+      summary: Get Latest Risk Assessment
+      tags: [Risk]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Latest assessment details
+  /risk/questions:
+    get:
+      summary: List Active Risk Questions (App)
+      tags: [Risk Questions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of active questions
+    post:
+      summary: Create Risk Question (Dashboard)
+      tags: [Risk Questions]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                order:
+                  type: number
+      responses:
+        201:
+          description: Question created
+  /risk/questions/all:
+    get:
+      summary: List All Risk Questions (Dashboard)
+      description: Returns all questions. If page/limit are omitted, returns a flat array.
+      tags: [Risk Questions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of all questions
+  /risk/questions/{id}:
+    put:
+      summary: Update Risk Question (Dashboard)
+      tags: [Risk Questions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                order:
+                  type: number
+                active:
+                  type: boolean
+      responses:
+        200:
+          description: Question updated
+    delete:
+      summary: Delete Risk Question (Dashboard)
+      tags: [Risk Questions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Question deleted
+  /chat:
+    get:
+      summary: List Chats
+      tags: [Chat]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of chats
+    post:
+      summary: Create Chat
+      tags: [Chat]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                participantId:
+                  type: string
+      responses:
+        201:
+          description: Chat created
+  /chat/{id}:
+    get:
+      summary: Get Chat Details
+      tags: [Chat]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Chat details
+  /news:
+    get:
+      summary: List News
+      tags: [News]
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: category
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of news
+    post:
+      summary: Create News
+      tags: [News]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsInput'
+      responses:
+        201:
+          description: News created
+  /news/{id}:
+    get:
+      summary: Get News Details
+      tags: [News]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: News details
+    put:
+      summary: Update News
+      tags: [News]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsInput'
+      responses:
+        200:
+          description: News updated
+    delete:
+      summary: Delete News
+      tags: [News]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: News deleted
+  /news/{id}/disable:
+    patch:
+      summary: Disable News
+      tags: [News]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: News disabled
+  /users:
+    get:
+      summary: List Users
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: role
+          schema:
+            type: string
+            enum: [USER, SUPPORT, POLICE, FIREFIGHTER, DELEGATE, GOV]
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum: [COMMON, SYSTEM]
+      responses:
+        200:
+          description: List of users
+    post:
+      summary: Create User
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: User created
+  /users/{id}:
+    get:
+      summary: Get User Details
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: User details
+    put:
+      summary: Update User
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: User updated
+    delete:
+      summary: Delete User
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: User deleted

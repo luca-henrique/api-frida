@@ -70,8 +70,8 @@ O Service não deve saber que existe uma classe `RiskAssessmentRepository` concr
 import { RiskAssessment } from '../entities/RiskAssessment'; // Entidade Pura
 
 export interface IRiskAssessmentRepository {
-    create(data: CreateAssessmentDTO): Promise<RiskAssessment>;
-    findByUserId(userId: string): Promise<RiskAssessment | null>;
+  create(data: CreateAssessmentDTO): Promise<RiskAssessment>;
+  findByUserId(userId: string): Promise<RiskAssessment | null>;
 }
 ```
 
@@ -97,7 +97,7 @@ No `RiskAssessmentService`, injetamos a interface (usando token do tsyringe):
 ```typescript
 @injectable()
 export class RiskAssessmentService {
-    constructor(@inject('RiskRepository') private riskRepo: IRiskAssessmentRepository) {}
+  constructor(@inject('RiskRepository') private riskRepo: IRiskAssessmentRepository) {}
 }
 ```
 

@@ -31,8 +31,8 @@ Autentica um usuário e retorna um token JWT.
 
 ```json
 {
-    "email": "usuario@example.com",
-    "password": "password123"
+  "email": "usuario@example.com",
+  "password": "password123"
 }
 ```
 
@@ -63,11 +63,11 @@ Cria uma nova conta de usuário (Público).
 
 ```json
 {
-    "name": "Novo Usuário",
-    "email": "novo@example.com",
-    "password": "password123",
-    "cpf": "123.123.123-12",
-    "phone": "(11) 99999-9999"
+  "name": "Novo Usuário",
+  "email": "novo@example.com",
+  "password": "password123",
+  "cpf": "123.123.123-12",
+  "phone": "(11) 99999-9999"
 }
 ```
 
@@ -82,7 +82,7 @@ Renova o token de acesso usando um refresh token.
 
 ```json
 {
-    "token": "..."
+  "token": "..."
 }
 ```
 
@@ -96,10 +96,10 @@ Retorna uma lista paginada de usuários.
 - **Método:** `GET`
 - **Autenticação:** Bearer Token (Necessária)
 - **Parâmetros de Query:**
-    - `page` (opcional): Número da página (padrão: 1).
-    - `limit` (opcional): Itens por página (padrão: 10).
-    - `role` (opcional): Filtrar por papel (`USER`, `SUPPORT`, `POLICE`, `FIREFIGHTER`, `DELEGATE`, `GOV`).
-    - `type` (opcional): Filtrar por tipo (`COMMON` = Vítimas, `SYSTEM` = Agentes).
+  - `page` (opcional): Número da página (padrão: 1).
+  - `limit` (opcional): Itens por página (padrão: 10).
+  - `role` (opcional): Filtrar por papel (`USER`, `SUPPORT`, `POLICE`, `FIREFIGHTER`, `DELEGATE`, `GOV`).
+  - `type` (opcional): Filtrar por tipo (`COMMON` = Vítimas, `SYSTEM` = Agentes).
 
 **Exemplo de Resposta:**
 
@@ -152,11 +152,11 @@ Cria um novo usuário (Admin).
 
 ```json
 {
-    "name": "Novo Usuário",
-    "email": "novo@example.com",
-    "password": "password123",
-    "cpf": "123.123.123-12",
-    "role": "USER"
+  "name": "Novo Usuário",
+  "email": "novo@example.com",
+  "password": "password123",
+  "cpf": "123.123.123-12",
+  "role": "USER"
 }
 ```
 
@@ -171,8 +171,8 @@ Atualiza os dados de um usuário existente.
 
 ```json
 {
-    "name": "Nome Atualizado",
-    "role": "SUPPORT"
+  "name": "Nome Atualizado",
+  "role": "SUPPORT"
 }
 ```
 
