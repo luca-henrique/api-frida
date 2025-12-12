@@ -9,7 +9,13 @@ All notable changes to the **Auth** module will be documented in this file.
 - **Architecture**: Use Case layer (`src/modules/auth/useCases`) for better separation of concerns.
 - **Architecture**: Repository Interfaces (`IUserRepository`, etc.) for Dependency Inversion.
 - **Documentation**: `docs/ENVIRONMENT_VARIABLES.md` detailing all env vars.
-- **Configuration**: Externalized security settings (tokens, lockout, rate limit) to `.env`.
+- **Configuration**: moved `IUserRepository` and `UserRepository` to `src/modules/users/repositories`.
+- **User Module**: Refactored User module to use Use Case pattern.
+  - Implemented `CreateUserUseCase`, `ListUsersUseCase`, `ShowUserUseCase`, `UpdateUserUseCase`, `DeleteUserUseCase`.
+  - Created `UserController` in `src/modules/users/controllers`.
+  - Updated `user.routes.ts` to use new controller.
+  - Removed legacy `UserService` and `UserController`.
+- **Refactor**: Externalized configuration variables to `.env`.s, lockout, rate limit) to `.env`.
 
 ### Changed
 

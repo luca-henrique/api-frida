@@ -15,13 +15,6 @@ Backend API for the Frida application, built with Node.js, Express, TypeScript, 
 - PostgreSQL (or your configured database)
 - Redis (optional, for scaling sockets)
 
-## Code Quality
-
-This project uses **ESLint** and **Prettier** to ensure code quality and consistency.
-
-- **Linting**: Run `npm run lint` to check for issues.
-- **Formatting**: Run `npm run format` to fix formatting issues.
-
 ## Installation
 
 1. Clone the repository:

@@ -3,8 +3,8 @@ import { container } from 'tsyringe';
 import { IMailProvider } from './providers/MailProvider/models/IMailProvider';
 import { EtherealMailProvider } from './providers/MailProvider/implementations/EtherealMailProvider';
 
-import { IUserRepository } from '../../modules/auth/repositories/IUserRepository';
-import { UserRepository } from '../../repositories/UserRepository';
+import { IUserRepository } from '../../modules/users/repositories/IUserRepository';
+import { UserRepository } from '../../modules/users/repositories/UserRepository';
 
 import { IRefreshTokenRepository } from '../../modules/auth/repositories/IRefreshTokenRepository';
 import { RefreshTokenRepository } from '../../modules/auth/repositories/RefreshTokenRepository';

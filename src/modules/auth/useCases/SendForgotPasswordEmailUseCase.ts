@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 import { AppError } from '../../../errors/AppError';
-import { IUserRepository } from '../repositories/IUserRepository';
+import { IUserRepository } from '../../users/repositories/IUserRepository';
 import { IUserTokensRepository } from '../repositories/IUserTokensRepository';
 import { IMailProvider } from '../../../shared/container/providers/MailProvider/models/IMailProvider';
 

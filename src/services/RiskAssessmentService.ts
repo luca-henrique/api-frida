@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { RiskAssessmentRepository } from '../repositories/RiskAssessmentRepository';
-import { UserRepository } from '../repositories/UserRepository';
+import { UserRepository } from '../modules/users/repositories/UserRepository';
 
 const ANSWER_VALUES = {
   NAO: 0,

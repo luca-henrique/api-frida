@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { hash } from 'bcryptjs';
 import { z } from 'zod';
 import { AppError } from '../../../errors/AppError';
-import { IUserRepository } from '../repositories/IUserRepository';
+import { IUserRepository } from '../../users/repositories/IUserRepository';
 import { registerSchema } from '../schemas/auth.schema';
 
 type RegisterData = z.infer<typeof registerSchema>;

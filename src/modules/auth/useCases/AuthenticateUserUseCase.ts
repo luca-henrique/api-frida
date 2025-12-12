@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 
 import { AppError } from '../../../errors/AppError';
-import { IUserRepository } from '../repositories/IUserRepository';
+import { IUserRepository } from '../../users/repositories/IUserRepository';
 import { IRefreshTokenRepository } from '../repositories/IRefreshTokenRepository';
 import { loginSchema } from '../schemas/auth.schema';
 

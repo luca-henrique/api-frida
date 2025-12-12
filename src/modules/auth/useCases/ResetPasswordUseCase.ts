@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../errors/AppError';
-import { IUserRepository } from '../repositories/IUserRepository';
+import { IUserRepository } from '../../users/repositories/IUserRepository';
 import { IUserTokensRepository } from '../repositories/IUserTokensRepository';
 import bcrypt from 'bcryptjs';
 import dayjs from 'dayjs';
@@ -10,7 +10,7 @@ export class ResetPasswordUseCase {
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
     @inject('UserTokensRepository') private userTokensRepository: IUserTokensRepository,
-  ) {}
+  ) { }
 
   async execute(token: string, password: string): Promise<void> {
     const userToken = await this.userTokensRepository.findByToken(token);
