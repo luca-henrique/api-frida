@@ -1,15 +1,20 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
-import { ChatController } from '../controllers/ChatController';
+import { ChatController } from '../modules/chat/controllers/ChatController';
 import { authMiddleware } from '../middlewares/auth';
 
+import multer from 'multer';
+import uploadConfig from '../config/upload';
+
 const router = Router();
-const controller = container.resolve(ChatController);
+const chatController = new ChatController();
+const upload = multer(uploadConfig);
 
 router.use(authMiddleware);
 
-router.get('/', controller.listChats);
-router.post('/', controller.createChat);
-router.get('/:id', controller.getChat);
+router.get('/', chatController.listChats);
+router.post('/', chatController.createChat);
+router.get('/:id', chatController.getChat);
+router.post('/:chatId/messages', upload.single('file'), chatController.sendMessage);
+router.patch('/:id/read', chatController.markAsRead);
 
 export default router;

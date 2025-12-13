@@ -9,7 +9,7 @@ import app from './app';
 import prisma from './config/database';
 import { initSocket } from './config/socket';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 async function main() {
   try {

@@ -93,6 +93,10 @@ model Message {
   senderId  String
   sender    User     @relation("SentMessages", fields: [senderId], references: [id])
   read      Boolean  @default(false)
+  readAt    DateTime?
+  deliveredAt DateTime?
+  type      String   @default("TEXT") // TEXT, IMAGE, FILE
+  fileUrl   String?
   createdAt DateTime @default(now())
 }
 
@@ -119,13 +123,31 @@ model Report {
   id          String   @id @default(uuid())
   userId      String?
   user        User?    @relation(fields: [userId], references: [id])
+
   type        String   // e.g., "PHYSICAL", "PSYCHOLOGICAL", "EMERGENCY"
   description String?
   latitude    Float?
   longitude   Float?
+  address     String?
+  city        String?
+  neighborhood String?
+  delegacia   String?
+  mediaUrl    String?
+  mediaType   String?  // IMAGE, VIDEO, AUDIO
   status      String   @default("PENDING") // PENDING, PROCESSING, RESOLVED
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  statusHistory ReportStatusHistory[]
+}
+
+model ReportStatusHistory {
+  id             String   @id @default(uuid())
+  reportId       String
+  report         Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  previousStatus String?
+  newStatus      String
+  changedBy      String?  // UserId
+  createdAt      DateTime @default(now())
 }
 
 model Contact {

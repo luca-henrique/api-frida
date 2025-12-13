@@ -21,12 +21,20 @@ import { RiskAssessmentRepository } from '../../modules/risk/repositories/RiskAs
 import { INewsRepository } from '../../modules/news/repositories/INewsRepository';
 import { NewsRepository } from '../../modules/news/repositories/NewsRepository';
 
+import { IChatRepository } from '../../modules/chat/repositories/IChatRepository';
+import { ChatRepository } from '../../modules/chat/repositories/ChatRepository';
+
+import { IReportRepository } from '../../modules/reports/repositories/IReportRepository';
+import { ReportRepository } from '../../modules/reports/repositories/ReportRepository';
+
 container.registerSingleton<IRiskAssessmentRepository>(
   'RiskAssessmentRepository',
   RiskAssessmentRepository
 );
 
 container.registerSingleton<INewsRepository>('NewsRepository', NewsRepository);
+container.registerSingleton<IChatRepository>('ChatRepository', ChatRepository);
+container.registerSingleton<IReportRepository>('ReportRepository', ReportRepository);
 
 container.registerSingleton<IMailProvider>('MailProvider', EtherealMailProvider);
 
@@ -38,3 +46,12 @@ container.registerSingleton<IRefreshTokenRepository>(
 );
 
 container.registerSingleton<IUserTokensRepository>('UserTokensRepository', UserTokensRepository);
+
+import { ReverseGeocodingService } from '../../modules/shared/services/ReverseGeocodingService';
+container.registerSingleton<ReverseGeocodingService>('ReverseGeocodingService', ReverseGeocodingService);
+
+import { ReportExportService } from '../../modules/reports/services/ReportExportService';
+container.registerSingleton<ReportExportService>('ReportExportService', ReportExportService);
+
+import { NotificationService } from '../../modules/shared/services/NotificationService';
+container.registerSingleton<NotificationService>('NotificationService', NotificationService);

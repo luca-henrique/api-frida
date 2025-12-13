@@ -1,4 +1,7 @@
 import { Server, Socket } from 'socket.io';
+import { container } from 'tsyringe';
+import { SendMessageUseCase } from '../../modules/chat/useCases/SendMessageUseCase';
+import { MarkMessageAsReadUseCase } from '../../modules/chat/useCases/MarkMessageAsReadUseCase';
 import prisma from '../../config/database';
 
 export const registerChatHandlers = (io: Server, socket: Socket) => {
@@ -9,52 +12,55 @@ export const registerChatHandlers = (io: Server, socket: Socket) => {
     console.log(`User ${userId} joined chat ${chatId}`);
   });
 
-  socket.on('send_message', async (data: { chatId: string; content: string }) => {
-    try {
-      const { chatId, content } = data;
+  socket.on('typing', (data: { chatId: string; isTyping: boolean }) => {
+    socket.to(data.chatId).emit('typing', {
+      chatId: data.chatId,
+      userId,
+      isTyping: data.isTyping,
+    });
+  });
 
-      // Ensure Chat exists (for mock/dev scenarios)
+  socket.on('mark_as_read', async (data: { chatId: string }) => {
+    try {
+      const markMessageAsReadUseCase = container.resolve(MarkMessageAsReadUseCase);
+      await markMessageAsReadUseCase.execute(data.chatId, userId);
+
+      // Notify others in chat that messages were read
+      socket.to(data.chatId).emit('messages_read', {
+        chatId: data.chatId,
+        readBy: userId,
+        readAt: new Date(),
+      });
+    } catch (err) {
+      console.error('Error marking as read:', err);
+    }
+  });
+
+  socket.on('send_message', async (data: { chatId: string; content: string; type?: 'TEXT' | 'IMAGE' | 'FILE'; fileUrl?: string }) => {
+    try {
+      const { chatId, content, type = 'TEXT', fileUrl } = data;
+
+      // TODO: Remove this DEV logic once frontend is fully integrated with correct flow
+      // Keeping it specifically because the previous code relied on auto-creating chats/users for testing
+
+      // Ensure Chat exists (using UseCase if possible, but UseCase requires participantId)
+      // Fallback to direct check for this specific legacy dev behavior, or try to infer.
+      // For now, let's assume the chat SHOULD exist. If not, we might fail or try to create it.
+      // The original code created it with just an ID, which is risky.
+      // Let's stick to the safer path: Try to send, if it fails, log it.
+      // However, to respect the previous robust "DEV" behavior:
+
       let chat = await prisma.chat.findUnique({ where: { id: chatId } });
       if (!chat) {
-        chat = await prisma.chat.create({
-          data: { id: chatId },
-        });
+        // Create dummy chat for dev if it doesn't exist
+        chat = await prisma.chat.create({ data: { id: chatId } });
         console.log(`[DEV] Created missing chat: ${chatId}`);
       }
 
-      // Ensure User exists (for mock/dev scenarios)
-      let user = await prisma.user.findUnique({ where: { id: userId } });
-      if (!user) {
-        console.log(`[DEV] Creating missing mock user: ${userId}`);
-        user = await prisma.user.create({
-          data: {
-            id: userId,
-            name: userId === 'user-123' ? 'Usuária Teste' : 'Especialista',
-            email: `${userId}@test.com`,
-            password: 'mock-password',
-            cpf: userId === 'user-123' ? '123.456.789-00' : '000.000.000-00',
-          },
-        });
-      }
+      // End DEV logic
 
-      // Save to DB
-      const message = await prisma.message.create({
-        data: {
-          chatId,
-          senderId: userId,
-          content,
-        },
-        include: {
-          sender: {
-            select: { id: true, name: true },
-          },
-        },
-      });
-
-      await prisma.chat.update({
-        where: { id: chatId },
-        data: { updatedAt: new Date() },
-      });
+      const sendMessageUseCase = container.resolve(SendMessageUseCase);
+      const message = await sendMessageUseCase.execute(chatId, userId, content, type, fileUrl);
 
       io.to(chatId).emit('receive_message', message);
     } catch (error) {
