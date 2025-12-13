@@ -80,5 +80,5 @@ exports.ChatController = ChatController = __decorate(
     __param(0, (0, tsyringe_1.inject)(ChatService_1.ChatService)),
     __metadata('design:paramtypes', [ChatService_1.ChatService]),
   ],
-  ChatController,
+  ChatController
 );

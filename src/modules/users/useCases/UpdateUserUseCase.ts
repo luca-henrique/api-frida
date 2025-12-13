@@ -12,8 +12,8 @@ import { IUpdateUserDTO, IUserResponseDTO } from '../dtos/IUserDTO';
 export class UpdateUserUseCase {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
-  ) { }
+    private userRepository: IUserRepository
+  ) {}
 
   async execute(id: string, data: IUpdateUserDTO): Promise<IUserResponseDTO> {
     const validatedData = updateUserSchema.parse(data);

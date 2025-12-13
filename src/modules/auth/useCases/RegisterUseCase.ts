@@ -11,8 +11,8 @@ type RegisterData = z.infer<typeof registerSchema>;
 export class RegisterUseCase {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
-  ) { }
+    private userRepository: IUserRepository
+  ) {}
 
   async execute(data: RegisterData) {
     const existingUser = await this.userRepository.findByEmailOrCpf(data.email, data.cpf);

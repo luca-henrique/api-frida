@@ -18,8 +18,8 @@ export class AuthenticateUserUseCase {
     @inject('UserRepository')
     private userRepository: IUserRepository,
     @inject('RefreshTokenRepository')
-    private refreshTokenRepository: IRefreshTokenRepository,
-  ) { }
+    private refreshTokenRepository: IRefreshTokenRepository
+  ) {}
 
   async execute({ email, password }: LoginData) {
     const user = await this.userRepository.findByEmail(email);
@@ -74,7 +74,7 @@ export class AuthenticateUserUseCase {
     const refreshToken = await this.refreshTokenRepository.create(
       user.id,
       uuidv4(),
-      refreshTokenExpiresIn,
+      refreshTokenExpiresIn
     );
 
     const { password: _, ...userWithoutPassword } = user;

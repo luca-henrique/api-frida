@@ -65,5 +65,5 @@ exports.RiskAssessmentService = RiskAssessmentService = __decorate(
     __param(0, (0, tsyringe_1.inject)(RiskAssessmentRepository_1.RiskAssessmentRepository)),
     __metadata('design:paramtypes', [RiskAssessmentRepository_1.RiskAssessmentRepository]),
   ],
-  RiskAssessmentService,
+  RiskAssessmentService
 );

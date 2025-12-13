@@ -9,8 +9,8 @@ import dayjs from 'dayjs';
 export class ResetPasswordUseCase {
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
-    @inject('UserTokensRepository') private userTokensRepository: IUserTokensRepository,
-  ) { }
+    @inject('UserTokensRepository') private userTokensRepository: IUserTokensRepository
+  ) {}
 
   async execute(token: string, password: string): Promise<void> {
     const userToken = await this.userTokensRepository.findByToken(token);

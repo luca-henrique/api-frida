@@ -95,5 +95,5 @@ let ChatRepository = class ChatRepository {
 exports.ChatRepository = ChatRepository;
 exports.ChatRepository = ChatRepository = __decorate(
   [(0, tsyringe_1.injectable)()],
-  ChatRepository,
+  ChatRepository
 );

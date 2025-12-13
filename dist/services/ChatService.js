@@ -72,5 +72,5 @@ exports.ChatService = ChatService = __decorate(
     __param(0, (0, tsyringe_1.inject)(ChatRepository_1.ChatRepository)),
     __metadata('design:paramtypes', [ChatRepository_1.ChatRepository]),
   ],
-  ChatService,
+  ChatService
 );

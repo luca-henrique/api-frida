@@ -15,8 +15,8 @@ export class AuthController {
     @inject(RegisterUseCase) private registerUseCase: RegisterUseCase,
     @inject(AuthenticateUserUseCase) private authenticateUserUseCase: AuthenticateUserUseCase,
     @inject(RefreshTokenUseCase) private refreshTokenUseCase: RefreshTokenUseCase,
-    @inject(LogoutUseCase) private logoutUseCase: LogoutUseCase,
-  ) { }
+    @inject(LogoutUseCase) private logoutUseCase: LogoutUseCase
+  ) {}
 
   register = async (req: Request, res: Response, next: NextFunction) => {
     try {

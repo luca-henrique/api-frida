@@ -12,13 +12,19 @@ import { RefreshTokenRepository } from '../../modules/auth/repositories/RefreshT
 import { IUserTokensRepository } from '../../modules/auth/repositories/IUserTokensRepository';
 import { UserTokensRepository } from '../../modules/auth/repositories/UserTokensRepository';
 
+import { IRiskQuestionRepository } from '../../modules/risk/repositories/IRiskQuestionRepository';
+import { RiskQuestionRepository } from '../../modules/risk/repositories/RiskQuestionRepository';
+
+import { IRiskAssessmentRepository } from '../../modules/risk/repositories/IRiskAssessmentRepository';
+import { RiskAssessmentRepository } from '../../modules/risk/repositories/RiskAssessmentRepository';
+
 container.registerSingleton<IMailProvider>('MailProvider', EtherealMailProvider);
 
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
 
 container.registerSingleton<IRefreshTokenRepository>(
   'RefreshTokenRepository',
-  RefreshTokenRepository,
+  RefreshTokenRepository
 );
 
 container.registerSingleton<IUserTokensRepository>('UserTokensRepository', UserTokensRepository);

@@ -29,8 +29,11 @@ export const updateUserSchema = z.object({
     .regex(/[0-9]/)
     .regex(/[\W_]/)
     .optional(),
-  cpf: z.string().refine((cpf) => validateCPF(cpf), {
-    message: 'Invalid CPF',
-  }).optional(),
+  cpf: z
+    .string()
+    .refine((cpf) => validateCPF(cpf), {
+      message: 'Invalid CPF',
+    })
+    .optional(),
   role: z.nativeEnum(Role).optional(),
 });

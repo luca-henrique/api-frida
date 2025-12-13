@@ -51,5 +51,5 @@ let UserRepository = class UserRepository {
 exports.UserRepository = UserRepository;
 exports.UserRepository = UserRepository = __decorate(
   [(0, tsyringe_1.injectable)()],
-  UserRepository,
+  UserRepository
 );

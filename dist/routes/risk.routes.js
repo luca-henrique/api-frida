@@ -6,7 +6,7 @@ const RiskAssessmentController_1 = require('../controllers/RiskAssessmentControl
 const auth_1 = require('../middlewares/auth');
 const router = (0, express_1.Router)();
 const controller = tsyringe_1.container.resolve(
-  RiskAssessmentController_1.RiskAssessmentController,
+  RiskAssessmentController_1.RiskAssessmentController
 );
 router.use(auth_1.authMiddleware);
 router.post('/', controller.create);

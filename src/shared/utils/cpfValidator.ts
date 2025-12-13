@@ -8,9 +8,7 @@ export function validateCPF(cpf: string): boolean {
   const cpfsDigits = cpf.split('').map((el) => +el);
 
   const rest = (count: number) =>
-    ((cpfsDigits
-      .slice(0, count - 12)
-      .reduce((soma, el, index) => soma + el * (count - index), 0) *
+    ((cpfsDigits.slice(0, count - 12).reduce((soma, el, index) => soma + el * (count - index), 0) *
       10) %
       11) %
     10;

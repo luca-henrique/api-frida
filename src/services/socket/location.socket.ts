@@ -8,7 +8,7 @@ export const registerLocationHandlers = (io: Server, socket: Socket) => {
   socket.on('update_location', async (data: { latitude: number; longitude: number }) => {
     console.log(
       `[DEBUG] SERVER received 'update_location' from User ${userId} (${userRole}):`,
-      JSON.stringify(data),
+      JSON.stringify(data)
     );
     try {
       const { latitude, longitude } = data;

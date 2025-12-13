@@ -22,7 +22,7 @@ app.use((0, helmet_1.default)());
 app.use((0, morgan_1.default)('dev'));
 app.use('/api', routes_1.default);
 const openApiSpec = js_yaml_1.default.load(
-  fs_1.default.readFileSync(path_1.default.join(__dirname, '../docs/openapi.yaml'), 'utf8'),
+  fs_1.default.readFileSync(path_1.default.join(__dirname, '../docs/openapi.yaml'), 'utf8')
 );
 app.use(
   '/docs',
@@ -30,7 +30,7 @@ app.use(
     spec: {
       content: openApiSpec,
     },
-  }),
+  })
 );
 app.use(error_middleware_1.errorMiddleware);
 app.get('/', (req, res) => {

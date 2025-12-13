@@ -12,15 +12,15 @@ import { ICreateUserDTO, IUserResponseDTO } from '../dtos/IUserDTO';
 export class CreateUserUseCase {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
-  ) { }
+    private userRepository: IUserRepository
+  ) {}
 
   async execute(data: ICreateUserDTO): Promise<IUserResponseDTO> {
     const validatedData = createUserSchema.parse(data);
 
     const existingUser = await this.userRepository.findByEmailOrCpf(
       validatedData.email,
-      validatedData.cpf,
+      validatedData.cpf
     );
 
     if (existingUser) {

@@ -1,28 +1,28 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
-import { RiskAssessmentController } from '../controllers/RiskAssessmentController';
-import { RiskQuestionController } from '../controllers/RiskQuestionController'; // Novo
-import { authMiddleware } from '../middlewares/auth';
+import { RiskQuestionController } from '../modules/risk/controllers/RiskQuestionController';
+import { RiskAssessmentController } from '../modules/risk/controllers/RiskAssessmentController';
+import { authMiddleware as ensureAuthenticated } from '../middlewares/auth';
 
-const router = Router();
-const riskController = container.resolve(RiskAssessmentController);
-const questionController = container.resolve(RiskQuestionController); // Novo
+const riskRouter = Router();
 
-import { optionalAuthMiddleware } from '../middlewares/optionalAuth';
+const riskQuestionController = new RiskQuestionController();
+const riskAssessmentController = new RiskAssessmentController();
 
-router.get('/', optionalAuthMiddleware, riskController.list); // Histórico (Público se passar userId)
-router.get('/questions/all', questionController.indexAll); // Lista todas (Público)
+import { adminMiddleware } from '../middlewares/admin.middleware';
 
-router.use(authMiddleware);
+// ... (imports)
 
-// Rotas do App (Usuária)
-router.get('/questions', questionController.indexActive); // App baixa as perguntas
-router.get('/latest', riskController.showLatest); // Retorna a última avaliação (respostas)
-router.post('/', riskController.create); // Envia as respostas
+// Risk Questions Routes (Protected by Admin Middleware)
+riskRouter.post('/questions', ensureAuthenticated, adminMiddleware, riskQuestionController.create);
+riskRouter.get('/questions', riskQuestionController.index); // Public access allowed for listing
+riskRouter.get('/questions/all', riskQuestionController.index);
+riskRouter.put('/questions/:id', ensureAuthenticated, adminMiddleware, riskQuestionController.update);
+riskRouter.delete('/questions/:id', ensureAuthenticated, adminMiddleware, riskQuestionController.delete);
 
-// Rotas do Dashboard (Admin/Gov) - Idealmente restringir por Role
-router.post('/questions', questionController.create);
-router.put('/questions/:id', questionController.update);
-router.delete('/questions/:id', questionController.delete);
+// Risk Assessment Routes
+riskRouter.get('/analytics', ensureAuthenticated, adminMiddleware, riskAssessmentController.getAnalytics);
+riskRouter.post('/', ensureAuthenticated, riskAssessmentController.create);
+riskRouter.get('/', ensureAuthenticated, riskAssessmentController.list);
+riskRouter.get('/latest', ensureAuthenticated, riskAssessmentController.showLatest);
 
-export default router;
+export default riskRouter;

@@ -16,7 +16,7 @@ export class UserController {
       Number(page),
       Number(limit),
       role as any,
-      type as any,
+      type as any
     );
 
     return res.json(result);

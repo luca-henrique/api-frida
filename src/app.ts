@@ -22,14 +22,14 @@ app.use(
         'img-src': ["'self'", 'data:', 'https://cdn.jsdelivr.net'],
       },
     },
-  }),
+  })
 );
 app.use(morgan('dev'));
 
 app.use('/api', routes);
 
 const openApiSpec = yaml.load(
-  fs.readFileSync(path.join(__dirname, '../docs/api/openapi.yaml'), 'utf8'),
+  fs.readFileSync(path.join(__dirname, '../docs/api/openapi.yaml'), 'utf8')
 );
 
 app.use(
@@ -38,7 +38,7 @@ app.use(
     spec: {
       content: openApiSpec,
     },
-  }),
+  })
 );
 
 app.use(errorMiddleware);

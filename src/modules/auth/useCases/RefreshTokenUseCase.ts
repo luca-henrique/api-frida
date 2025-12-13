@@ -9,8 +9,8 @@ import { IRefreshTokenRepository } from '../repositories/IRefreshTokenRepository
 export class RefreshTokenUseCase {
   constructor(
     @inject('RefreshTokenRepository')
-    private refreshTokenRepository: IRefreshTokenRepository,
-  ) { }
+    private refreshTokenRepository: IRefreshTokenRepository
+  ) {}
 
   async execute(token: string) {
     const refreshToken = await this.refreshTokenRepository.findByToken(token);

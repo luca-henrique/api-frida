@@ -41,5 +41,5 @@ let RiskAssessmentRepository = class RiskAssessmentRepository {
 exports.RiskAssessmentRepository = RiskAssessmentRepository;
 exports.RiskAssessmentRepository = RiskAssessmentRepository = __decorate(
   [(0, tsyringe_1.injectable)()],
-  RiskAssessmentRepository,
+  RiskAssessmentRepository
 );

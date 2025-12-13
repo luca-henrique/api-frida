@@ -6,8 +6,8 @@ import { IUserRepository } from '../repositories/IUserRepository';
 export class ListUsersUseCase {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
-  ) { }
+    private userRepository: IUserRepository
+  ) {}
 
   async execute(page: number, limit: number, role?: Role, type?: 'COMMON' | 'SYSTEM') {
     const skip = (page - 1) * limit;

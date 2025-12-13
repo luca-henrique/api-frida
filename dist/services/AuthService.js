@@ -83,5 +83,5 @@ exports.AuthService = AuthService = __decorate(
     __param(0, (0, tsyringe_1.inject)(UserRepository_1.UserRepository)),
     __metadata('design:paramtypes', [UserRepository_1.UserRepository]),
   ],
-  AuthService,
+  AuthService
 );

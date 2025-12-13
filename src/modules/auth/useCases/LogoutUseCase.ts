@@ -5,7 +5,7 @@ import { IRefreshTokenRepository } from '../repositories/IRefreshTokenRepository
 export class LogoutUseCase {
   constructor(
     @inject('RefreshTokenRepository')
-    private refreshTokenRepository: IRefreshTokenRepository,
+    private refreshTokenRepository: IRefreshTokenRepository
   ) {}
 
   async execute(refreshToken: string): Promise<void> {

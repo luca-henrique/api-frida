@@ -66,5 +66,5 @@ exports.AuthController = AuthController = __decorate(
     __param(0, (0, tsyringe_1.inject)(AuthService_1.AuthService)),
     __metadata('design:paramtypes', [AuthService_1.AuthService]),
   ],
-  AuthController,
+  AuthController
 );

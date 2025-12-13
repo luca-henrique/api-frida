@@ -34,7 +34,7 @@ export class UserRepository implements IUserRepository {
     skip: number,
     take: number,
     role?: Role,
-    type?: 'COMMON' | 'SYSTEM',
+    type?: 'COMMON' | 'SYSTEM'
   ): Promise<User[]> {
     let where: Prisma.UserWhereInput = {};
 

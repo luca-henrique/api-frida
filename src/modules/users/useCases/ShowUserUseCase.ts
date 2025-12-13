@@ -6,8 +6,8 @@ import { IUserRepository } from '../repositories/IUserRepository';
 export class ShowUserUseCase {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
-  ) { }
+    private userRepository: IUserRepository
+  ) {}
 
   async execute(id: string) {
     const user = await this.userRepository.findById(id);
