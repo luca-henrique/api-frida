@@ -18,6 +18,16 @@ import { RiskQuestionRepository } from '../../modules/risk/repositories/RiskQues
 import { IRiskAssessmentRepository } from '../../modules/risk/repositories/IRiskAssessmentRepository';
 import { RiskAssessmentRepository } from '../../modules/risk/repositories/RiskAssessmentRepository';
 
+import { INewsRepository } from '../../modules/news/repositories/INewsRepository';
+import { NewsRepository } from '../../modules/news/repositories/NewsRepository';
+
+container.registerSingleton<IRiskAssessmentRepository>(
+  'RiskAssessmentRepository',
+  RiskAssessmentRepository
+);
+
+container.registerSingleton<INewsRepository>('NewsRepository', NewsRepository);
+
 container.registerSingleton<IMailProvider>('MailProvider', EtherealMailProvider);
 
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository);

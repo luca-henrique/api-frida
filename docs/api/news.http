@@ -1,49 +1,79 @@
 @baseUrl = http://localhost:3000/api
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI4MTc4NWZlLTcyZDEtNGEwYy04NDg2LTQ1OTZjMWNhNTNiYiIsImlhdCI6MTc2NDUzMDUzOSwiZXhwIjoxNzY0NTMxNDM5fQ.0ri66l9kgFSuZ7R5VUQL-kujIh3j8aU9mXRMrYl2PsY
+
+### Listar Notícias (Padrão)
 GET {{baseUrl}}/news?page=1&limit=10
-Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### Listar Notícias por Categoria
-GET {{baseUrl}}/news?page=1&limit=10&category=Legislação
-Content-Type: application/json
+### Listar Notícias com Busca e Categoria
+GET {{baseUrl}}/news?page=1&limit=10&category=Legislação&search=teste
+Authorization: Bearer {{token}}
 
-### Detalhe da Notícia
+### Top Notícias Mais Vistas (Analytics)
+GET {{baseUrl}}/news/analytics/overview
+Authorization: Bearer {{token}}
+
+### Detalhe da Notícia (Incrementa Views)
 GET {{baseUrl}}/news/1
-Content-Type: application/json
+Authorization: Bearer {{token}}
 
-### Criar Notícia (Autenticado)
+### Criar Notícia (JSON - Sem Imagem)
 POST {{baseUrl}}/news
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "Nova Notícia de Teste",
-  "date": "2023-12-01",
+  "title": "Notícia via JSON",
   "category": "Comunidade",
-  "content": "Conteúdo da nova notícia de teste para verificar a criação."
+  "content": "Conteúdo da notícia sem imagem.",
+  "date": "2023-12-12",
+  "publishAt": "2023-12-12T10:00:00Z"
 }
 
-### Atualizar Notícia (Autenticado)
+### Criar Notícia (Multipart - Com Imagem)
+# Nota: Arquivos só funcionam em clientes que suportam envio de arquivo real via HTTP Client (ex: VS Code Rest Client)
+# Ajuste o caminho do arquivo no campo 'image'
+POST {{baseUrl}}/news
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Bearer {{token}}
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Notícia com Imagem
+--boundary
+Content-Disposition: form-data; name="category"
+
+Segurança
+--boundary
+Content-Disposition: form-data; name="content"
+
+Conteúdo da notícia com upload de imagem local.
+--boundary
+Content-Disposition: form-data; name="date"
+
+2023-12-12
+--boundary
+Content-Disposition: form-data; name="image"; filename="teste.jpg"
+Content-Type: image/jpeg
+
+< ./teste.jpg
+--boundary--
+
+### Atualizar Notícia
 PUT {{baseUrl}}/news/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "Título Atualizado"
+  "title": "Título Atualizado",
+  "active": true
 }
 
-### Desabilitar Notícia (Autenticado)
+### Desabilitar Notícia
 PATCH {{baseUrl}}/news/1/disable
-Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### Excluir Notícia (Autenticado)
+### Excluir Notícia
 DELETE {{baseUrl}}/news/1
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-### Desabilitar Notícia (Autenticado)
-PATCH {{baseUrl}}/news/1/disable
-Content-Type: application/json
 Authorization: Bearer {{token}}
