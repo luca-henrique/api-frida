@@ -33,6 +33,9 @@ import { LocationRepository } from '../../modules/location/repositories/Location
 import { IContactsRepository } from '../../modules/contacts/repositories/IContactsRepository';
 import { ContactsRepository } from '../../modules/contacts/repositories/ContactsRepository';
 
+import { INotificationsRepository } from '../../modules/notifications/repositories/INotificationsRepository';
+import { NotificationsRepository } from '../../modules/notifications/repositories/NotificationsRepository';
+
 container.registerSingleton<IRiskAssessmentRepository>(
   'RiskAssessmentRepository',
   RiskAssessmentRepository
@@ -43,6 +46,7 @@ container.registerSingleton<IChatRepository>('ChatRepository', ChatRepository);
 container.registerSingleton<IReportRepository>('ReportRepository', ReportRepository);
 container.registerSingleton<ILocationRepository>('LocationRepository', LocationRepository);
 container.registerSingleton<IContactsRepository>('ContactsRepository', ContactsRepository);
+container.registerSingleton<INotificationsRepository>('NotificationsRepository', NotificationsRepository);
 
 container.registerSingleton<IMailProvider>('MailProvider', EtherealMailProvider);
 

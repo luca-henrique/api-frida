@@ -7,6 +7,7 @@ import userRoutes from '../modules/users/infra/http/routes/user.routes';
 import locationRoutes from '../modules/location/infra/http/routes/location.routes';
 import contactsRoutes from '../modules/contacts/infra/http/routes/contacts.routes';
 import reportRoutes from '../modules/reports/infra/http/routes/report.routes';
+import notificationsRoutes from '../modules/notifications/infra/http/routes/notifications.routes';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/chat', chatRoutes);
 router.use('/reports', reportRoutes);
 router.use('/location', locationRoutes);
 router.use('/contacts', contactsRoutes);
+router.use('/notifications', notificationsRoutes);
 
 export default router;

@@ -14,6 +14,11 @@ export const registerSocketHandlers = (io: Server) => {
     }
 
     // Register modular handlers
+    // Join a room specific to this user for private notifications
+    socket.join(`user_${userId}`);
+    console.log(`[DEBUG] User ${userId} joined room 'user_${userId}'`);
+
+    // Register module-specific handlers
     registerChatHandlers(io, socket);
     registerLocationHandlers(io, socket);
   });
