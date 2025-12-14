@@ -27,6 +27,12 @@ import { ChatRepository } from '../../modules/chat/repositories/ChatRepository';
 import { IReportRepository } from '../../modules/reports/repositories/IReportRepository';
 import { ReportRepository } from '../../modules/reports/repositories/ReportRepository';
 
+import { ILocationRepository } from '../../modules/location/repositories/ILocationRepository';
+import { LocationRepository } from '../../modules/location/repositories/LocationRepository';
+
+import { IContactsRepository } from '../../modules/contacts/repositories/IContactsRepository';
+import { ContactsRepository } from '../../modules/contacts/repositories/ContactsRepository';
+
 container.registerSingleton<IRiskAssessmentRepository>(
   'RiskAssessmentRepository',
   RiskAssessmentRepository
@@ -35,6 +41,8 @@ container.registerSingleton<IRiskAssessmentRepository>(
 container.registerSingleton<INewsRepository>('NewsRepository', NewsRepository);
 container.registerSingleton<IChatRepository>('ChatRepository', ChatRepository);
 container.registerSingleton<IReportRepository>('ReportRepository', ReportRepository);
+container.registerSingleton<ILocationRepository>('LocationRepository', LocationRepository);
+container.registerSingleton<IContactsRepository>('ContactsRepository', ContactsRepository);
 
 container.registerSingleton<IMailProvider>('MailProvider', EtherealMailProvider);
 
@@ -47,11 +55,11 @@ container.registerSingleton<IRefreshTokenRepository>(
 
 container.registerSingleton<IUserTokensRepository>('UserTokensRepository', UserTokensRepository);
 
-import { ReverseGeocodingService } from '../../modules/shared/services/ReverseGeocodingService';
+import { ReverseGeocodingService } from '../../modules/reports/services/ReverseGeocodingService';
 container.registerSingleton<ReverseGeocodingService>('ReverseGeocodingService', ReverseGeocodingService);
 
 import { ReportExportService } from '../../modules/reports/services/ReportExportService';
 container.registerSingleton<ReportExportService>('ReportExportService', ReportExportService);
 
-import { NotificationService } from '../../modules/shared/services/NotificationService';
+import { NotificationService } from '../services/NotificationService';
 container.registerSingleton<NotificationService>('NotificationService', NotificationService);

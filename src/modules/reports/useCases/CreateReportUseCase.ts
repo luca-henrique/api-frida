@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { ICreateReportDTO, IReportRepository } from '../repositories/IReportRepository';
 
-import { ReverseGeocodingService } from '../../shared/services/ReverseGeocodingService';
-import { NotificationService } from '../../shared/services/NotificationService';
+import { ReverseGeocodingService } from '../services/ReverseGeocodingService';
+import { NotificationService } from '../../../shared/services/NotificationService';
 
 @injectable()
 export class CreateReportUseCase {
@@ -17,7 +17,7 @@ export class CreateReportUseCase {
 
     async execute(data: ICreateReportDTO) {
         if (data.latitude && data.longitude && !data.address) {
-            const addressInfo = await this.reverseGeocodingService.getAddress(data.latitude, data.longitude);
+            const addressInfo = await this.reverseGeocodingService.execute(data.latitude, data.longitude);
             if (addressInfo) {
                 data.address = addressInfo.address;
                 data.city = addressInfo.city;

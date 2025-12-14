@@ -55,6 +55,7 @@ model User {
   sentMessages     Message[] @relation("SentMessages")
   chats            Chat[]    @relation("UserChats")
   location         Location?
+  locationHistory  LocationHistory[]
   refreshToken     RefreshToken?
   tokens           UserToken[]
 }
@@ -107,6 +108,15 @@ model Location {
   latitude  Float
   longitude Float
   updatedAt DateTime @updatedAt
+}
+
+model LocationHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  latitude  Float
+  longitude Float
+  timestamp DateTime @default(now())
 }
 
 model RiskAssessment {

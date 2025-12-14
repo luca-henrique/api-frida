@@ -7,7 +7,7 @@ interface SocketUser {
   role?: 'WOMAN' | 'GOV';
 }
 
-import { registerSocketHandlers } from '../services/socket.service';
+import { registerSocketHandlers } from '../shared/infra/websockets/socket.service';
 
 export let io: SocketIOServer;
 

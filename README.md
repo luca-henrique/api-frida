@@ -9,6 +9,10 @@ Backend API for the Frida application, built with Node.js, Express, TypeScript, 
 - Real-time Chat (Socket.io)
 - Secure Error Handling
 
+## Architecture
+
+The project follows a **Modular Monolith** architecture. See [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) for details.
+
 ## Prerequisites
 
 - Node.js (v18+)
