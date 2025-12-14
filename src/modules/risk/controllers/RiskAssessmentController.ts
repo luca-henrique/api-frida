@@ -5,6 +5,7 @@ import { ListAssessmentsUseCase } from '../useCases/ListAssessmentsUseCase';
 import { ShowLatestAssessmentUseCase } from '../useCases/ShowLatestAssessmentUseCase';
 import { createAssessmentSchema } from '../schemas/risk.schema';
 import { GetRiskAnalyticsUseCase } from '../useCases/GetRiskAnalyticsUseCase';
+import { GetDashboardStatsUseCase } from '../useCases/GetDashboardStatsUseCase';
 
 export class RiskAssessmentController {
     async create(req: Request, res: Response): Promise<Response> {
@@ -43,4 +44,11 @@ export class RiskAssessmentController {
         const analytics = await getRiskAnalyticsUseCase.execute();
         return res.json(analytics);
     }
+
+    async getDashboard(req: Request, res: Response): Promise<Response> {
+        const getDashboardStatsUseCase = container.resolve(GetDashboardStatsUseCase);
+        const stats = await getDashboardStatsUseCase.execute();
+        return res.json(stats);
+    }
 }
+

@@ -17,6 +17,7 @@ riskRouter.put('/questions/:id', authMiddleware, adminMiddleware, riskQuestionCo
 riskRouter.delete('/questions/:id', authMiddleware, adminMiddleware, riskQuestionController.delete);
 
 // Risk Assessment Routes
+riskRouter.get('/dashboard', authMiddleware, adminMiddleware, riskAssessmentController.getDashboard);
 riskRouter.get('/analytics', authMiddleware, adminMiddleware, riskAssessmentController.getAnalytics);
 riskRouter.post('/', authMiddleware, riskAssessmentController.create);
 riskRouter.get('/', authMiddleware, riskAssessmentController.list);

@@ -74,4 +74,30 @@ export class RiskAssessmentRepository implements IRiskAssessmentRepository {
             });
         });
     }
+    async countAssessmentsToday(): Promise<number> {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        return prisma.riskAssessment.count({
+            where: {
+                createdAt: {
+                    gte: today,
+                },
+            },
+        });
+    }
+
+    async countByRiskLevel(): Promise<{ riskLevel: string; count: number }[]> {
+        const result = await prisma.riskAssessment.groupBy({
+            by: ['riskLevel'],
+            _count: {
+                riskLevel: true,
+            },
+        });
+
+        return result.map((item) => ({
+            riskLevel: item.riskLevel,
+            count: item._count.riskLevel,
+        }));
+    }
 }

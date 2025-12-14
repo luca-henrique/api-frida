@@ -36,6 +36,8 @@ import { ContactsRepository } from '../../modules/contacts/repositories/Contacts
 import { INotificationsRepository } from '../../modules/notifications/repositories/INotificationsRepository';
 import { NotificationsRepository } from '../../modules/notifications/repositories/NotificationsRepository';
 
+container.registerSingleton<IRiskQuestionRepository>('RiskQuestionRepository', RiskQuestionRepository);
+
 container.registerSingleton<IRiskAssessmentRepository>(
   'RiskAssessmentRepository',
   RiskAssessmentRepository

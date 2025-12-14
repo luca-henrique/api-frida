@@ -112,4 +112,17 @@ export class ReportRepository implements IReportRepository {
 
         return result;
     }
+    async countResolvedToday(): Promise<number> {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        return prisma.report.count({
+            where: {
+                status: 'RESOLVED',
+                updatedAt: {
+                    gte: today,
+                },
+            },
+        });
+    }
 }

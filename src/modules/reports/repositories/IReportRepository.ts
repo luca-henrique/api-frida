@@ -32,6 +32,7 @@ export interface IReportRepository {
     findById(id: string): Promise<Report | null>;
     updateStatus(data: IUpdateReportStatusDTO, userId?: string): Promise<Report>;
     findByUserId(userId: string): Promise<Report[]>;
+    countResolvedToday(): Promise<number>;
 }
 
 export type ReportWithUser = Report & {

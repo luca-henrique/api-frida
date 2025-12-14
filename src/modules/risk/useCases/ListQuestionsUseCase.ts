@@ -16,7 +16,7 @@ export class ListQuestionsUseCase {
         const total = await this.riskQuestionRepository.count(activeOnly);
 
         return {
-            questions,
+            data: questions,
             total,
             page,
             totalPages: Math.ceil(total / limit),

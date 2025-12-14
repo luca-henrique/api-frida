@@ -66,3 +66,15 @@ Authorization: Bearer {{token}}
 DELETE {{baseUrl}}/risk/questions/:id
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### --- ANALYTICS (Dashboard) ---
+
+### Obter Dados do Dashboard (Admin/Gov)
+GET {{baseUrl}}/risk/dashboard
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obter Analytics de Risco (Geral)
+GET {{baseUrl}}/risk/analytics
+Content-Type: application/json
+Authorization: Bearer {{token}}
